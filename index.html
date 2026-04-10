@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -171,17 +171,207 @@
 
       </div>
 
-      <!-- SPOTIFY EMBED PLAYER -->
-      <div class="player-section reveal">
+      <!-- DESKMAN PLAYER -->
+      <div class="deskman reveal" id="deskman">
+        <!-- Decorative crosses -->
+        <span class="dk-cross" style="top:8%;left:3%">+</span>
+        <span class="dk-cross" style="top:5%;right:12%">+</span>
+        <span class="dk-cross" style="top:45%;right:4%">+</span>
+        <span class="dk-cross" style="bottom:15%;left:8%">+</span>
+        <span class="dk-cross" style="bottom:8%;right:6%">+</span>
+        <span class="dk-cross" style="top:25%;left:48%">+</span>
+
+        <!-- Header -->
+        <div class="dk-header">
+          <div class="dk-brand">
+            <span class="dk-logo">JFONS<span class="dk-dot">✦</span></span>
+            <span class="dk-sub">CD+MD PLAYER · DIGITAL AUDIO</span>
+          </div>
+          <div class="dk-specs-badge">
+            <span>Playback: [ ] [ ] [ ]</span>
+            <span>CD — or — Streaming</span>
+          </div>
+        </div>
+
+        <!-- Main body -->
+        <div class="dk-body">
+          <!-- Disc section -->
+          <div class="dk-disc-area">
+            <div class="dk-disc" id="dk-disc">
+              <div class="dk-disc-grooves"></div>
+              <div class="dk-disc-label">
+                <span class="dk-disc-title" id="dk-disc-title">JFONS</span>
+                <span class="dk-disc-track" id="dk-disc-track">Select a track</span>
+              </div>
+              <div class="dk-disc-center"></div>
+            </div>
+            <!-- Tonearm -->
+            <div class="dk-tonearm" id="dk-tonearm">
+              <div class="dk-tonearm-base"></div>
+              <div class="dk-tonearm-arm"></div>
+              <div class="dk-tonearm-head"></div>
+            </div>
+          </div>
+
+          <!-- Controls panel -->
+          <div class="dk-controls">
+            <!-- LCD Display -->
+            <div class="dk-lcd">
+              <div class="dk-lcd-screen" id="dk-lcd">
+                <div class="dk-lcd-row1">
+                  <span class="dk-lcd-label">▸ JFONS</span>
+                  <span class="dk-lcd-format" id="dk-lcd-format">CD</span>
+                </div>
+                <div class="dk-lcd-title" id="dk-lcd-title">MONARCA</div>
+                <div class="dk-lcd-row3">
+                  <span class="dk-lcd-album" id="dk-lcd-album">[ ] ALBUM ; MONARCA</span>
+                </div>
+                <div class="dk-lcd-progress">
+                  <div class="dk-lcd-bar">
+                    <div class="dk-lcd-fill" id="dk-lcd-fill"></div>
+                  </div>
+                  <div class="dk-lcd-times">
+                    <span id="dk-time-current">00:00</span>
+                    <span id="dk-time-total">00:00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="dk-lcd-glow"></div>
+            </div>
+
+            <!-- EQ Visualizer -->
+            <div class="dk-eq" id="dk-eq">
+              <div class="dk-eq-label">8-Band Equalizer</div>
+              <div class="dk-eq-bars">
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="0"></div><span>63</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="1"></div><span>125</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="2"></div><span>250</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="3"></div><span>500</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="4"></div><span>1K</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="5"></div><span>2K</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="6"></div><span>4K</span></div>
+                <div class="dk-eq-band"><div class="dk-eq-bar" data-band="7"></div><span>8K</span></div>
+              </div>
+            </div>
+
+            <!-- Transport buttons -->
+            <div class="dk-transport">
+              <button class="dk-btn dk-btn-prev" id="dk-prev" aria-label="Previous">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+              </button>
+              <button class="dk-btn dk-btn-play" id="dk-play" aria-label="Play">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="dk-icon-play"><polygon points="5,3 19,12 5,21"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="dk-icon-pause" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+              <button class="dk-btn dk-btn-next" id="dk-next" aria-label="Next">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+              </button>
+              <div class="dk-volume">
+                <span>[ VOL ]</span>
+                <input type="range" min="0" max="100" value="80" class="dk-vol-slider" id="dk-vol">
+              </div>
+            </div>
+
+            <!-- FX Buttons -->
+            <div class="dk-fx">
+              <button class="dk-fx-btn" data-fx="reverb">
+                <span class="dk-fx-led"></span>
+                <span>Reverb</span>
+              </button>
+              <button class="dk-fx-btn" data-fx="delay">
+                <span class="dk-fx-led"></span>
+                <span>Delay</span>
+              </button>
+              <button class="dk-fx-btn" data-fx="tapestop">
+                <span class="dk-fx-led"></span>
+                <span>Tape Stop</span>
+              </button>
+              <button class="dk-fx-btn" data-fx="loop">
+                <span class="dk-fx-led"></span>
+                <span>Loop</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Track list -->
+        <div class="dk-tracklist">
+          <div class="dk-tracklist-header">
+            <span class="dk-cassette-icon">◎</span>
+            <span>Track Select</span>
+          </div>
+          <div class="dk-tracks" id="dk-tracks">
+            <button class="dk-track active" data-index="0">
+              <span class="dk-track-num">01</span>
+              <span class="dk-track-name">Mirame</span>
+              <span class="dk-track-plays">17,145</span>
+            </button>
+            <button class="dk-track" data-index="1">
+              <span class="dk-track-num">02</span>
+              <span class="dk-track-name">Mil Veces</span>
+              <span class="dk-track-plays">16,657</span>
+            </button>
+            <button class="dk-track" data-index="2">
+              <span class="dk-track-num">03</span>
+              <span class="dk-track-name">Dimelo Baby</span>
+              <span class="dk-track-plays">—</span>
+            </button>
+            <button class="dk-track" data-index="3">
+              <span class="dk-track-num">04</span>
+              <span class="dk-track-name">Madonna</span>
+              <span class="dk-track-plays">—</span>
+            </button>
+            <button class="dk-track" data-index="4">
+              <span class="dk-track-num">05</span>
+              <span class="dk-track-name">Play Me</span>
+              <span class="dk-track-plays">—</span>
+            </button>
+            <button class="dk-track" data-index="5">
+              <span class="dk-track-num">06</span>
+              <span class="dk-track-name">MONARCA</span>
+              <span class="dk-track-plays">—</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom specs -->
+        <div class="dk-bottom-specs">
+          <div class="dk-spec-col">
+            <span class="dk-spec-title">MEDIA</span>
+            <span>Streaming compatible</span>
+            <span>10+ releases loaded</span>
+          </div>
+          <div class="dk-spec-col">
+            <span class="dk-spec-title">FX ENGINE</span>
+            <span>32-bit DSP Processor</span>
+            <span>4 dedicated FX buttons</span>
+          </div>
+          <div class="dk-spec-col">
+            <span class="dk-spec-title">BUILD</span>
+            <span>Weight: ∞ kg</span>
+            <span>Dimensions: Web × Browser</span>
+          </div>
+        </div>
+
+        <!-- Side ruler -->
+        <div class="dk-ruler">
+          <span>00.0001</span>
+          <span>01.0112</span>
+          <span>10.0444</span>
+          <span>13.3444</span>
+          <span>22.114</span>
+          <span>33.3333</span>
+        </div>
+
+        <!-- Hidden Spotify iframe for actual playback -->
         <iframe
-          style="border-radius:12px"
+          id="dk-spotify"
           src="https://open.spotify.com/embed/artist/3qzK6r7uVi9hDa8jfyqX6X?utm_source=generator&theme=0"
-          width="100%"
-          height="352"
+          width="0"
+          height="0"
           frameBorder="0"
-          allowfullscreen=""
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy">
+          style="position:absolute;opacity:0;pointer-events:none;">
         </iframe>
       </div>
     </div>
