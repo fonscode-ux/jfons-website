@@ -852,6 +852,31 @@ button {
   color: var(--teal-dim);
 }
 
+/* Spotify Embed */
+.dk-spotify-embed {
+  border: 1px solid var(--teal-dark);
+  background: var(--lcd-bg);
+  padding: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.dk-spotify-embed::before {
+  content: '▸ SPOTIFY PLAYBACK';
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.45rem;
+  color: #444;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.dk-spotify-embed iframe {
+  display: block;
+  opacity: 0.95;
+}
+
 /* EQ Visualizer */
 .dk-eq {
   background: #0a0a0a;

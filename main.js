@@ -109,19 +109,18 @@ document.addEventListener('DOMContentLoaded', () => {
 // DESKMAN PLAYER ENGINE
 // ============================================
 function initDeskman() {
+  // Tracks with Spotify embed IDs
   const tracks = [
-    { name: 'Mirame', album: 'MONARCA', plays: '17,145' },
-    { name: 'Mil Veces', album: 'Mil Veces', plays: '16,657' },
-    { name: 'Dimelo Baby', album: 'Dimelo Baby', plays: '—' },
-    { name: 'Madonna', album: 'MONARCA', plays: '—' },
-    { name: 'Play Me', album: 'MONARCA', plays: '—' },
-    { name: 'MONARCA', album: 'MONARCA', plays: '—' },
+    { name: 'Mirame', album: 'MONARCA', plays: '17,145', spotifyId: '6uy0OuvzGMbaaABLV17H3h6x' },
+    { name: 'Mil Veces', album: 'Mil Veces', plays: '16,657', spotifyId: '2KyeuWBPoXsRmHlOkhny3A' },
+    { name: 'Dimelo Baby', album: 'Dimelo Baby', plays: '—', spotifyId: '6wnbqFuEVbgCa0miApxWxM' },
+    { name: 'Madonna', album: 'MONARCA', plays: '—', spotifyId: '5AbfXcl3DdRBNteNbqomy5' },
+    { name: 'Play Me', album: 'MONARCA', plays: '—', spotifyId: '3jdbKnZiaRlKTErXzPeU0C' },
+    { name: 'MONARCA', album: 'MONARCA', plays: '—', spotifyId: '0fbWordfufvEOTEtxaXu1h' },
   ];
 
   let currentTrack = 0;
   let isPlaying = false;
-  let progress = 0;
-  let progressInterval = null;
   let eqInterval = null;
 
   // DOM refs
@@ -143,6 +142,26 @@ function initDeskman() {
   const trackBtns = document.querySelectorAll('.dk-track');
   const fxBtns = document.querySelectorAll('.dk-fx-btn');
   const volSlider = document.getElementById('dk-vol');
+  const spotifyIframe = document.getElementById('dk-spotify');
+
+  // Create the visible Spotify embed container
+  const embedContainer = document.createElement('div');
+  embedContainer.className = 'dk-spotify-embed';
+  embedContainer.innerHTML = `<iframe
+    id="dk-spotify-player"
+    src="https://open.spotify.com/embed/track/${tracks[0].spotifyId}?utm_source=generator&theme=0"
+    width="100%"
+    height="80"
+    frameBorder="0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy"
+    style="border-radius:8px;"></iframe>`;
+  // Insert after the LCD display
+  const lcdParent = document.querySelector('.dk-lcd');
+  lcdParent.parentNode.insertBefore(embedContainer, lcdParent.nextSibling);
+
+  // Remove the old hidden iframe
+  if (spotifyIframe) spotifyIframe.remove();
 
   function loadTrack(index) {
     currentTrack = index;
@@ -158,23 +177,24 @@ function initDeskman() {
       btn.classList.toggle('active', i === index);
     });
 
-    // Reset progress
-    progress = 0;
+    // Update Spotify embed to the selected track
+    const player = document.getElementById('dk-spotify-player');
+    player.src = `https://open.spotify.com/embed/track/${track.spotifyId}?utm_source=generator&theme=0`;
+
+    // Reset visual progress
     lcdFill.style.width = '0%';
     timeCurrent.textContent = '00:00';
-    timeTotal.textContent = formatTime(180 + Math.random() * 60);
+    timeTotal.textContent = '03:30';
   }
 
-  function togglePlay() {
-    isPlaying = !isPlaying;
-
+  function setPlayState(playing) {
+    isPlaying = playing;
     if (isPlaying) {
       playBtn.classList.add('active');
       iconPlay.style.display = 'none';
       iconPause.style.display = 'block';
       disc.classList.add('spinning');
       tonearm.classList.add('active');
-      startProgress();
       startEQ();
     } else {
       playBtn.classList.remove('active');
@@ -182,28 +202,12 @@ function initDeskman() {
       iconPause.style.display = 'none';
       disc.classList.remove('spinning');
       tonearm.classList.remove('active');
-      stopProgress();
       stopEQ();
     }
   }
 
-  function startProgress() {
-    stopProgress();
-    progressInterval = setInterval(() => {
-      progress += 0.35;
-      if (progress >= 100) {
-        progress = 0;
-        nextTrack();
-      }
-      lcdFill.style.width = progress + '%';
-      const totalSec = 210;
-      const currentSec = Math.floor((progress / 100) * totalSec);
-      timeCurrent.textContent = formatTime(currentSec);
-    }, 300);
-  }
-
-  function stopProgress() {
-    if (progressInterval) clearInterval(progressInterval);
+  function togglePlay() {
+    setPlayState(!isPlaying);
   }
 
   function startEQ() {
@@ -226,23 +230,13 @@ function initDeskman() {
   function nextTrack() {
     const next = (currentTrack + 1) % tracks.length;
     loadTrack(next);
-    if (isPlaying) {
-      progress = 0;
-    }
+    setPlayState(true);
   }
 
   function prevTrack() {
     const prev = (currentTrack - 1 + tracks.length) % tracks.length;
     loadTrack(prev);
-    if (isPlaying) {
-      progress = 0;
-    }
-  }
-
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    setPlayState(true);
   }
 
   // Event listeners
@@ -254,8 +248,7 @@ function initDeskman() {
     btn.addEventListener('click', () => {
       const idx = parseInt(btn.dataset.index);
       loadTrack(idx);
-      if (!isPlaying) togglePlay();
-      else progress = 0;
+      setPlayState(true);
     });
   });
 
@@ -264,12 +257,6 @@ function initDeskman() {
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
     });
-  });
-
-  // Volume (visual only)
-  volSlider.addEventListener('input', () => {
-    const vol = volSlider.value;
-    // Could connect to Web Audio API if needed
   });
 
   // Initialize
